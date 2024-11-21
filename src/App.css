@@ -3,3 +3,26 @@
   margin: 0 auto;
   padding: 2rem;
 }
+
+section {
+  border-bottom: 1px solid black;
+}
+.test_container {
+  display: flex;
+  padding-block: 1rem;
+}
+
+.test-correct,
+.test-error {
+  width: 50%;
+  margin: auto;
+  min-height: 5rem;
+}
+
+.test-correct {
+  /* outline: 1px solid green; */
+}
+
+.test-error {
+  /* outline: 1px solid red; */
+}
