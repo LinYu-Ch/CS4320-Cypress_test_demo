@@ -3,7 +3,7 @@ import React from "react";
 const TestComponent = ()=>{
     return (
         <div>
-            this is an incomplete test component
+            this is a test component
         </div>
     );
 }
