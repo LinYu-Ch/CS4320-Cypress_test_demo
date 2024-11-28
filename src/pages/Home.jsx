@@ -64,7 +64,7 @@ const Home = () => {
         }
         setIsLoaded(false);
     }
-        
+
     // test five logic
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -97,7 +97,20 @@ const Home = () => {
             .catch((failError) => setFailError(failError));
     };
 
-    
+
+    useEffect(() => {
+        let correctCases = document.querySelectorAll(".test-correct");
+        let errorCases = document.querySelectorAll(".test-error");
+        correctCases.forEach((testCase, index) => {
+            testCase.setAttribute("data-cytest", `correct${index+1}`)
+        })
+
+        errorCases.forEach((testCase, index) => {
+            testCase.setAttribute("data-cytest", `error${index+1}`)
+        })
+
+    });
+
     return (
         <>
             <header>
@@ -139,7 +152,6 @@ const Home = () => {
 
                     </div>
                     <div className="test-error">
-
                         <form onSubmit={formSubmitFail}>
                             <label htmlFor="ffusername">username:</label><br />
                             <input type="text" id='ffusername' name='ffusername' /><br />
@@ -165,7 +177,7 @@ const Home = () => {
                         <Link to="/TestRoute">Redirect Test</Link>
                     </div>
                     <div className="test-error">
-                    <Link to="/TestRout">Redirect Test</Link>
+                        <Link to="/TestRout">Redirect Test</Link>
                     </div>
                 </div>
             </section>
@@ -179,7 +191,7 @@ const Home = () => {
                         {isLoaded && <TestComponent />}
                     </div>
                     <div className="test-error">
-                            <button>Load Component</button>
+                        <button>Load Component</button>
                     </div>
                 </div>
             </section>
