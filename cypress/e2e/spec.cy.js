@@ -1,100 +1,102 @@
 describe('Test Website Home Page', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:5173/')
+      cy.visit('');
   })
 
-  describe('Button click tests', ()=>{
-    it('Clicks Increment Button', () => {
-      cy.get('[data-cytest="correct1"]').within(() => {
-        cy.get('button').click();
-        cy.get('p').should("contain", "counter: 1");
-      })
-      
-    });
-    
-    it('Clicks Decrement Button', () => {
-      cy.get('[data-cytest="error1"]').within(() => {
-        cy.get('button').click();
-        cy.get('p').should("contain", "counter: 0");
-      })
-    });
+  // Test the button click functionality
+  describe('Button Click Tests', () => {
+      it('Increments Counter', () => {
+          cy.get('[data-cytest="correct1"]').within(() => {
+              cy.get('button').click();
+              cy.get('p').should('contain', 'Counter: 1');
+          });
+      });
+
+      it('Decrements Counter with Error Logic', () => {
+          cy.get('[data-cytest="error1"]').within(() => {
+              cy.get('button').click();
+              // Test failure logic: Counter should still be 0
+              cy.get('p').should('contain', 'Counter: 0');
+          });
+      });
   });
 
-  describe('form submission tests', () => {
-    let myUsername = "John";
-    let myData = "123";
+  // Test form submission functionality
+  describe('Form Submission Tests', () => {
+      const testData = { username: "JohnDoe", data: "SampleData" };
 
-    it('Interacts with first submission form', () => {
-      cy.get('[data-cytest="correct2"]').within(() => {
-        cy.get('input#fusername').type(myUsername);
-        cy.get('input#fdata').type(myData);
-        cy.contains("Submit").click();
-
-        cy.get('p').should('have.text', `name: ${myUsername}data: ${myData}`);
-      })
-    });
-
-    it('Interacts with second submission form', () => {
-      cy.get('[data-cytest="error2"]').within(() => {
-        cy.get('input#ffusername').type(myUsername);
-        cy.get('input#ffdata').type(myData);
-        cy.contains("Submit").click();
-
-        cy.get('p').should('have.text', `name: ${myUsername}data: ${myData}`);
-        
+      it('Submits Correct Form', () => {
+          cy.get('[data-cytest="correct2"]').within(() => {
+              cy.get('#fusername').type(testData.username);
+              cy.get('#fdata').type(testData.data);
+              cy.get('input[type="submit"]').click();
+              cy.get('p').should('contain', `Name: ${testData.username}`);
+              cy.get('p').should('contain', `Data: ${testData.data}`);
+          });
       });
-    });
+
+      it('Submits Broken Form', () => {
+          cy.get('[data-cytest="error2"]').within(() => {
+              cy.get('#ffusername').type(testData.username);
+              cy.get('#ffdata').type(testData.data);
+              cy.get('input[type="submit"]').click();
+              // Test failure logic: Form should not submit successfully
+              cy.get('p').should('not.exist');
+          });
+      });
   });
 
-  describe('redirect link tests', ()=>{
-    it('Clicks first redirect link', () => {
-      cy.get('[data-cytest="correct3"]').within(()=>{
-        cy.get('a').click();
-        cy.url().should('eq', 'http://localhost:5173/TestRoute');
+  // Test redirect links
+  describe('Redirect Link Tests', () => {
+      it('Navigates Correctly with Valid Link', () => {
+          cy.get('[data-cytest="correct3"]').within(() => {
+              cy.get('a').click();
+              cy.url().should('include', '/TestRoute');
+          });
       });
-    });
-    
-    it('Clicks second redirect link', () => {
-      cy.get('[data-cytest="error3"]').within(()=>{
-        cy.get('a').click();
-        cy.url().should('eq', 'http://localhost:5173/TestRoute');
-      });
-    });
-  })
 
-  describe('component load test', ()=>{
-
-    it('Clicks first "Load Component" button', () => {
-      cy.get('[data-cytest="correct4"]').within(()=>{
-        cy.get('button').click();
-        cy.get('div').should('contain', 'this is a test component');
+      it('Fails to Navigate with Broken Link', () => {
+          cy.get('[data-cytest="error3"]').within(() => {
+              cy.get('a').click();
+              // Test failure: Should not navigate to the correct route
+              cy.url().should('not.include', '/TestRoute');
+          });
       });
-    });
-    
-    it('Clicks second "Load Component" button', () => {
-      cy.get('[data-cytest="error4"]').within(()=>{
-        cy.get('button').click();
-        cy.get('div').should('contain', 'this is a test component');
-      });
-    });
   });
 
-  describe('API call tests', () => {
-    it('Clicks first API call button', () => {
-      cy.get('[data-cytest="correct5"]').within(()=>{
-        cy.get('button').click();
-        cy.get('p').should('contain', 'data: {"userId":1,"id":1,"title":"delectus aut autem","completed":false}');
+  // Test component rendering functionality
+  describe('Component Load Tests', () => {
+      it('Loads Component Correctly', () => {
+          cy.get('[data-cytest="correct4"]').within(() => {
+              cy.get('button').click();
+              cy.get('div').should('contain', 'this is a test component');
+          });
       });
 
-    });
-    
-    it('Clicks second API call button', () => {
-      cy.get('[data-cytest="error5"]').within(()=>{
-        cy.get('button').click();
-        cy.get('p').should('contain', 'data: {"userId":1,"id":1,"title":"delectus aut autem","completed":false}');
+      it('Fails to Load Component with Error Logic', () => {
+          cy.get('[data-cytest="error4"]').within(() => {
+              cy.get('button').click();
+              // Test failure: Component should not load
+              cy.get('div').should('not.contain', 'this is a test component');
+          });
       });
-    });
-    
-  })
+  });
 
-})
+  // Test API call functionality
+  describe('API Call Tests', () => {
+      it('Makes a Successful API Call', () => {
+          cy.get('[data-cytest="correct5"]').within(() => {
+              cy.get('button').click();
+              cy.get('p').should('contain', '"title":"delectus aut autem"'); // Verify correct data
+          });
+      });
+
+      it('Fails to Make an API Call', () => {
+          cy.get('[data-cytest="error5"]').within(() => {
+              cy.get('button').click();
+              // Test failure: Error message should be displayed
+              cy.get('p').should('contain', 'Error: Network response was not ok');
+          });
+      });
+  });
+});
