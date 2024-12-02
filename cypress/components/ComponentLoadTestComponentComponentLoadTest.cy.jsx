@@ -1,4 +1,4 @@
-import ComponentLoadTestComponent from '../src/components/ComponentLoadTestComponent'
+import ComponentLoadTestComponent from '../../src/components/ComponentLoadTestComponent'
 
 describe('ComponentLoadTest Component', () => {
     it('Loads the component correctly', () => {

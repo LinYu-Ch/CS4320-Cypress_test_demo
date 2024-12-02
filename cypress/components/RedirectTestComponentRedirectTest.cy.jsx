@@ -1,4 +1,4 @@
-import RedirectTestComponent from '../src/components/RedirectTestComponent'
+import RedirectTestComponent from '../../src/components/RedirectTestComponent'
 import { MemoryRouter } from 'react-router-dom';
 
 describe('RedirectTest Component', () => {
