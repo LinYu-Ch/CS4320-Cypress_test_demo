@@ -2,169 +2,140 @@ import { Link } from 'react-router-dom';
 import TestComponent from '../components/TestComponent';
 import { useEffect, useState } from 'react';
 
-
 const Home = () => {
-
-    /* Test logic tags display code that should work for the given test,
-    test fail logic contains code that is supposed to be broken in ways
-    developers may commonly forget to check.
-    */
-
-    // test one logic
+    // Correct logic
     const [counter, setCounter] = useState(0);
-    function incrementCounter() {
-        let current = counter + 1;
-        setCounter(current);
-    }
+    const incrementCounter = () => setCounter(counter + 1);
 
-    // test one fail logic
-    const [failCounter, setfailCounter] = useState(0);
-    function decrementCounter() {
-        let current = failCounter - 1;
-        setfailCounter(current);
-    }
+    // Error-prone logic
+    const [failCounter, setFailCounter] = useState(0);
+    const decrementCounter = () => {
+        if (failCounter > 0) { // Incorrect: should allow negative counters
+            setFailCounter(failCounter - 1);
+        }
+    };
 
-    // test two logic
-
+    // Form submission logic
     const [submittedData, setSubmittedData] = useState(null);
-
-    function formSubmit(submit) {
+    const formSubmit = (submit) => {
         submit.preventDefault();
-        // Use the FormData API to capture form inputs
         const form = submit.target;
         const formData = new FormData(form);
+        setSubmittedData(Object.fromEntries(formData.entries()));
+    };
 
-        // Convert FormData to an object
-        const formObject = Object.fromEntries(formData.entries());
-        setSubmittedData(formObject); // Update the state with form data
-    }
-
-    // test two fail logic
-
+    // Broken form logic
     const [failSubmittedData, setFailSubmittedData] = useState(null);
-
-    function formSubmitFail(submit) {
+    const formSubmitFail = (submit) => {
         submit.preventDefault();
-        // Use the FormData API to capture form inputs
         const form = submit.target;
         const formData = new FormData();
+        setFailSubmittedData(Object.fromEntries(formData.entries()));
+    };
 
-        // Convert FormData to an object
-        const formObject = Object.fromEntries(formData.entries());
-        setFailSubmittedData(formObject); // Update the state with form data
-    }
-
-    // test four logic
+    // Component rendering logic
     const [isLoaded, setIsLoaded] = useState(false);
-
-    function loadComponent() {
+    const loadComponent = () => {
         if (!isLoaded) {
             setIsLoaded(true);
             return;
         }
-        setIsLoaded(false);
-    }
+        setIsLoaded(!isLoaded); // Incorrectly toggles state even when loaded
+    };
 
-    // test five logic
+    // API call logic
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
-    function makeAPIcall() {
-        // Make the API request
+    const makeAPIcall = () => {
         fetch("https://jsonplaceholder.typicode.com/todos/1")
             .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+                if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
             })
-            .then((data) => setData(data))
-            .catch((error) => setError(error));
+            .then(setData)
+            .catch(setError);
     };
 
-    // test five fail logic
+    // Broken API call logic
     const [failData, setFailData] = useState(null);
     const [failError, setFailError] = useState(null);
-    function makeBadAPIcall() {
-        // Make the API request
+    const makeBadAPIcall = () => {
         fetch("https://jsonplaceholder.typicode.com/todo/1")
             .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
+                if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
             })
-            .then((failData) => setFailData(failData))
-            .catch((failError) => setFailError(failError));
+            .then(setFailData)
+            .catch(setFailError);
     };
 
-
     useEffect(() => {
-        let correctCases = document.querySelectorAll(".test-correct");
-        let errorCases = document.querySelectorAll(".test-error");
+        const correctCases = document.querySelectorAll(".test-correct");
+        const errorCases = document.querySelectorAll(".test-error");
+
         correctCases.forEach((testCase, index) => {
-            testCase.setAttribute("data-cytest", `correct${index+1}`)
-        })
+            testCase.setAttribute("data-cytest", `correct${index + 1}`);
+        });
 
         errorCases.forEach((testCase, index) => {
-            testCase.setAttribute("data-cytest", `error${index+1}`)
-        })
-
-    });
+            testCase.setAttribute("data-cytest", `error${index + 1}`);
+        });
+    }, []);
 
     return (
         <>
             <header>
-                <h1>Hello, this is a cypress testing framework demo, our project is built using vite and react</h1>
+                <h1>Hello, this is a Cypress testing framework demo built using Vite and React</h1>
             </header>
 
-            <section id='section-1'>
-                <h2>test demo 1</h2>
-                <p>Button function test</p>
+            <section id="section-1">
+                <h2>Test Demo 1</h2>
+                <p>Button Function Test</p>
                 <div className="test_container">
                     <div className="test-correct">
-                        <button onClick={incrementCounter}>increment counter</button>
-                        {<p>counter: {counter}</p>}
+                        <button onClick={incrementCounter}>Increment Counter</button>
+                        <p>Counter: {counter}</p>
                     </div>
                     <div className="test-error">
-                        <button onClick={decrementCounter}>decrement counter</button>
-                        {<p>counter: {failCounter}</p>}
+                        <button onClick={decrementCounter}>Decrement Counter</button>
+                        <p>Counter: {failCounter}</p>
                     </div>
                 </div>
             </section>
 
-            <section id='section-2'>
-                <h2>test demo 2</h2>
-                <p>Form submission test</p>
+            <section id="section-2">
+                <h2>Test Demo 2</h2>
+                <p>Form Submission Test</p>
                 <div className="test_container">
                     <div className="test-correct">
                         <form onSubmit={formSubmit}>
-                            <label htmlFor="fusername">username:</label><br />
-                            <input type="text" id='fusername' name='fusername' /><br />
-                            <label htmlFor="fdata">data:</label><br />
-                            <input type="text" id='fdata' name='fdata' /><br />
+                            <label htmlFor="fusername">Username:</label><br />
+                            <input type="text" id="fusername" name="fusername" /><br />
+                            <label htmlFor="fdata">Data:</label><br />
+                            <input type="text" id="fdata" name="fdata" /><br />
                             <input type="submit" value="Submit" />
                         </form>
-
-                        {submittedData && (<p>
-                            name: {submittedData.fusername}<br />
-                            data: {submittedData.fdata}</p>)
-                        }
-
+                        {submittedData && (
+                            <p>
+                                Name: {submittedData.fusername}<br />
+                                Data: {submittedData.fdata}
+                            </p>
+                        )}
                     </div>
                     <div className="test-error">
                         <form onSubmit={formSubmitFail}>
-                            <label htmlFor="ffusername">username:</label><br />
-                            <input type="text" id='ffusername' name='ffusername' /><br />
-                            <label htmlFor="ffdata">data:</label><br />
-                            <input type="text" id='ffdata' name='ffdata' /><br />
+                            <label htmlFor="ffusername">Username:</label><br />
+                            <input type="text" id="ffusername" name="ffusername" /><br />
+                            <label htmlFor="ffdata">Data:</label><br />
+                            <input type="text" id="ffdata" name="ffdata" /><br />
                             <input type="submit" value="Submit" />
                         </form>
-
-                        {failSubmittedData && (<p>
-                            name: {failSubmittedData.ffusername}<br />
-                            data: {failSubmittedData.ffdata}</p>)
-                        }
-
+                        {failSubmittedData && (
+                            <p>
+                                Name: {failSubmittedData.ffusername}<br />
+                                Data: {failSubmittedData.ffdata}
+                            </p>
+                        )}
                     </div>
                 </div>
             </section>
@@ -213,8 +184,7 @@ const Home = () => {
                 </div>
             </section>
         </>
-
-    )
-}
+    );
+};
 
 export default Home;
