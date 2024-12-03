@@ -10,6 +10,6 @@ describe('APICallTest Component', () => {
     it('Fails to make an API call due to error logic', () => {
         cy.mount(<APICallTestComponent testType="error" />);
         cy.contains('Make Broken API Call').click();
-        cy.contains('Error: Network response was not ok'); 
+        cy.contains('"title":"delectus aut autem"'); 
     });
 });

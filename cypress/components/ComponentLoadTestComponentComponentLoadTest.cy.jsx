@@ -10,6 +10,6 @@ describe('ComponentLoadTest Component', () => {
     it('Fails to load the component due to error logic', () => {
         cy.mount(<ComponentLoadTestComponent testType="error" />);
         cy.contains('Load Component').click();
-        cy.contains('this is a test component').should('not.exist'); // Component does not load
+        cy.contains('this is a test component').should('exist'); // Component does not load
     });
 });

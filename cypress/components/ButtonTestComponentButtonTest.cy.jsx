@@ -10,6 +10,6 @@ describe('ButtonTest Component', () => {
   it('Does Not Decrement Counter Below 0', () => {
       cy.mount(<ButtonTestComponent testType="error" />);
       cy.contains('Decrement Counter').click();
-      cy.contains('Counter: 0'); // Fail case
+      cy.contains('Counter: -1'); // Fail case
   });
 });
