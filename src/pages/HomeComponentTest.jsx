@@ -1,6 +1,5 @@
 import ButtonTestComponent from '../components/ButtonTestComponent';
 import FormTestComponent from '../components/FormTestComponent';
-import RedirectTestComponent from '../components/RedirectTestComponent';
 import ComponentLoadTestComponent from '../components/ComponentLoadTestComponent';
 import APICallTestComponent from '../components/APICallTestComponent';
 
@@ -21,16 +20,11 @@ const HomeComponentTest = () => {
                 <FormTestComponent testType="error" />
             </section>
             <section id="section-3">
-                <h2>Redirect Test</h2>
-                <RedirectTestComponent testType="correct" />
-                <RedirectTestComponent testType="error" />
-            </section>
-            <section id="section-4">
                 <h2>Component Load Test</h2>
                 <ComponentLoadTestComponent testType="correct" />
                 <ComponentLoadTestComponent testType="error" />
             </section>
-            <section id="section-5">
+            <section id="section-4">
                 <h2>API Call Test</h2>
                 <APICallTestComponent testType="correct" />
                 <APICallTestComponent testType="error" />
