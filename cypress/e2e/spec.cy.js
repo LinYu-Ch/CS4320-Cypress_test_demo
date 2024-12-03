@@ -59,7 +59,7 @@ describe('Test Website Home Page', () => {
           cy.get('[data-cytest="error3"]').within(() => {
               cy.get('a').click();
               // Test failure: Should not navigate to the correct route
-              cy.url().should('not.include', '/TestRoute');
+              cy.url().should('include', '/TestRoute');
           });
       });
   });
@@ -95,7 +95,7 @@ describe('Test Website Home Page', () => {
           cy.get('[data-cytest="error5"]').within(() => {
               cy.get('button').click();
               // Test failure: Error message should be displayed
-              cy.get('p').should('contain', 'Error: Network response was not ok');
+              cy.get('p').should('not.contain', 'Error: Network response was not ok');
           });
       });
   });

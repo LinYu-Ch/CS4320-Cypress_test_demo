@@ -10,9 +10,8 @@ const Home = () => {
     // Error-prone logic
     const [failCounter, setFailCounter] = useState(0);
     const decrementCounter = () => {
-        if (failCounter > 0) { // Incorrect: should allow negative counters
             setFailCounter(failCounter - 1);
-        }
+        
     };
 
     // Form submission logic
